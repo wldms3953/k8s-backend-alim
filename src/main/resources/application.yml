@@ -1,3 +1,23 @@
 spring:
   application:
-    name: k8s-backend-alim
+    name: k8s-backend-alim  # 서비스 이름 (Kafka group-id로도 사용됨)
+
+  kafka:
+    listener:
+      ack-mode: manual_immediate  # 수동으로 메시지 ack 하되, 즉시 반영
+    consumer:
+      group-id: ${spring.application.name}  # 컨슈머 그룹 ID → 위에 설정한 이름
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      enable-auto-commit: false  # 오토 커밋 X → 수동 커밋 필요
+      auto-offset-reset: latest  # 최근 메시지부터 읽기
+      max-poll-records: 10  # 한 번에 가져올 메시지 수 제한
+      properties:
+        spring.json.trusted.packages: "*"  # 역직렬화 시 모든 패키지 허용
+        spring.json.use.type.headers: false  # Kafka 헤더에 타입정보 무시
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.add.type.headers: false  # Kafka 헤더에 타입정보 추가 X
+x
