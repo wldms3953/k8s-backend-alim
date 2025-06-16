@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping(value = "/backend/alim/v1", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/alim/v1", produces = MediaType.APPLICATION_JSON_VALUE)
 public class BackendAlimController {
     @GetMapping(value = "/hello")
     public ApiResponseDto<String> hello() {
